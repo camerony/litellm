@@ -99,4 +99,5 @@ STABILIZATION_TODO.md
 **/test-results
 **/playwright-report
 **/*.storageState.json
-**/coverage
+**/coverageauth-profiles.json
+auth-profiles.json.lock
