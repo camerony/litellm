@@ -3294,6 +3294,46 @@ def completion(  # type: ignore # noqa: PLR0915
                 extra_headers=headers,
             )
 
+        elif custom_llm_provider == "google_antigravity":
+            from litellm.llms.google_antigravity.chat.handler import GoogleAntigravityChatCompletion
+
+            google_antigravity_chat = GoogleAntigravityChatCompletion()
+            
+            if acompletion is True:
+                response = google_antigravity_chat.acompletion(
+                    model=model,
+                    messages=messages,
+                    api_base=api_base,
+                    model_response=model_response,
+                    print_verbose=print_verbose,
+                    encoding=_get_encoding(),
+                    api_key=api_key,
+                    logging_obj=logging,
+                    optional_params=optional_params,
+                    litellm_params=litellm_params,
+                    logger_fn=logger_fn,
+                    headers=headers,
+                    timeout=timeout,
+                    client=client
+                )
+            else:
+                response = google_antigravity_chat.completion(
+                    model=model,
+                    messages=messages,
+                    api_base=api_base,
+                    model_response=model_response,
+                    print_verbose=print_verbose,
+                    encoding=_get_encoding(),
+                    api_key=api_key,
+                    logging_obj=logging,
+                    optional_params=optional_params,
+                    litellm_params=litellm_params,
+                    logger_fn=logger_fn,
+                    headers=headers,
+                    timeout=timeout,
+                    client=client
+                )
+
         elif custom_llm_provider == "vertex_ai":
             vertex_ai_project = (
                 optional_params.pop("vertex_project", None)

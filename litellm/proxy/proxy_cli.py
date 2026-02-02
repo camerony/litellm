@@ -500,6 +500,17 @@ class ProxyInitializationHelpers:
     help="Restart worker after this many requests (uvicorn: limit_max_requests, gunicorn: max_requests)",
     envvar="MAX_REQUESTS_BEFORE_RESTART",
 )
+@click.option(
+    "--login",
+    is_flag=True,
+    default=False,
+    help="Login to a provider (requires --provider)",
+)
+@click.option(
+    "--provider",
+    default=None,
+    help="Provider to login to (e.g. google_antigravity)",
+)
 def run_server(  # noqa: PLR0915
     host,
     port,
@@ -539,6 +550,8 @@ def run_server(  # noqa: PLR0915
     skip_server_startup,
     keepalive_timeout,
     max_requests_before_restart,
+    login,
+    provider,
 ):
     args = locals()
     if local:
@@ -575,6 +588,18 @@ def run_server(  # noqa: PLR0915
     if version is True:
         ProxyInitializationHelpers._echo_litellm_version()
         return
+    if login is True:
+        if provider == "google_antigravity":
+            try:
+                from litellm.llms.google_antigravity.auth import login as antigravity_login
+                antigravity_login()
+                return
+            except ImportError:
+                click.echo("Error: Could not import google_antigravity auth. Check your installation.")
+                return
+        else:
+            click.echo(f"Provider '{provider}' not supported for login.")
+            return
     if model and "ollama" in model and api_base is None:
         ProxyInitializationHelpers._run_ollama_serve()
     if health is True:

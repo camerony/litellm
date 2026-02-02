@@ -3009,6 +3009,7 @@ class LlmProviders(str, Enum):
     DATAROBOT = "datarobot"
     VERTEX_AI = "vertex_ai"
     VERTEX_AI_BETA = "vertex_ai_beta"
+    GOOGLE_ANTIGRAVITY = "google_antigravity"
     GEMINI = "gemini"
     AI21 = "ai21"
     BASETEN = "baseten"
