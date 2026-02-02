@@ -5,6 +5,7 @@ import { Button as Button2, Col, Form, Input, Row, Select, Typography, Upload, U
 import React from "react";
 import { CredentialItem, ProviderCredentialFieldMetadata } from "../networking";
 import { provider_map, Providers } from "../provider_info_helpers";
+import GoogleAntigravityOAuthButton from "./GoogleAntigravityOAuthButton";
 const { Link } = Typography;
 
 interface ProviderSpecificFieldsProps {
@@ -211,6 +212,20 @@ const ProviderSpecificFields: React.FC<ProviderSpecificFieldsProps> = ({ selecte
             <Text className="mb-2 text-red-500">
               {loadError instanceof Error ? loadError.message : "Failed to load provider credential fields"}
             </Text>
+          </Col>
+        </Row>
+      )}
+      {/* Special OAuth handling for Google Antigravity */}
+      {selectedProviderEnum === Providers.Google_Antigravity && (
+        <Row className="mb-4">
+          <Col span={24}>
+            <GoogleAntigravityOAuthButton
+              onSuccess={(data) => {
+                form.setFieldsValue({
+                  credential_name: `antigravity-${data.email}`,
+                });
+              }}
+            />
           </Col>
         </Row>
       )}
