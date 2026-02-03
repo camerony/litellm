@@ -6,6 +6,7 @@ import React from "react";
 import { CredentialItem, ProviderCredentialFieldMetadata } from "../networking";
 import { provider_map, Providers } from "../provider_info_helpers";
 import GoogleAntigravityOAuthButton from "./GoogleAntigravityOAuthButton";
+import AnthropicTokenSetupButton from "./AnthropicTokenSetupButton";
 const { Link } = Typography;
 
 interface ProviderSpecificFieldsProps {
@@ -223,6 +224,20 @@ const ProviderSpecificFields: React.FC<ProviderSpecificFieldsProps> = ({ selecte
               onSuccess={(data) => {
                 form.setFieldsValue({
                   credential_name: `antigravity-${data.email}`,
+                });
+              }}
+            />
+          </Col>
+        </Row>
+      )}
+      {/* Special Token handling for Anthropic (OpenClaw-style) */}
+      {selectedProviderEnum === Providers.Anthropic && (
+        <Row className="mb-4">
+          <Col span={24}>
+            <AnthropicTokenSetupButton
+              onSuccess={(data) => {
+                form.setFieldsValue({
+                  credential_name: data.profile_id,
                 });
               }}
             />

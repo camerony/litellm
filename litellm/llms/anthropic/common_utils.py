@@ -460,7 +460,26 @@ class AnthropicModelInfo(BaseLLMModelInfo):
     def get_api_key(api_key: Optional[str] = None) -> Optional[str]:
         from litellm.secret_managers.main import get_secret_str
 
-        return api_key or get_secret_str("ANTHROPIC_API_KEY")
+        # First, check if an API key was explicitly provided
+        if api_key:
+            return api_key
+
+        # Check for API key in environment variables
+        env_api_key = get_secret_str("ANTHROPIC_API_KEY")
+        if env_api_key:
+            return env_api_key
+
+        # Fall back to stored token from `claude setup-token` (OpenClaw-style)
+        try:
+            from litellm.llms.anthropic_token.auth import get_anthropic_token
+            stored_token = get_anthropic_token(profile_id="anthropic:manual")
+            if stored_token:
+                return stored_token
+        except Exception:
+            # If token retrieval fails, continue with None
+            pass
+
+        return None
 
     @staticmethod
     def get_base_model(model: Optional[str] = None) -> Optional[str]:

@@ -305,6 +305,9 @@ from litellm.proxy.credential_endpoints.endpoints import router as credential_ro
 from litellm.proxy.auth.google_antigravity_auth_endpoints import (
     router as google_antigravity_auth_router,
 )
+from litellm.proxy.auth.anthropic_token_endpoints import (
+    router as anthropic_token_router,
+)
 from litellm.proxy.db.db_transaction_queue.spend_log_cleanup import SpendLogCleanup
 from litellm.proxy.db.exception_handler import PrismaDBExceptionHandler
 from litellm.proxy.discovery_endpoints import ui_discovery_endpoints_router
@@ -11483,6 +11486,11 @@ app.include_router(credential_router)
 app.include_router(
     google_antigravity_auth_router,
     prefix="/auth/google_antigravity",
+    tags=["auth"],
+)
+app.include_router(
+    anthropic_token_router,
+    prefix="/anthropic",
     tags=["auth"],
 )
 app.include_router(llm_passthrough_router)
